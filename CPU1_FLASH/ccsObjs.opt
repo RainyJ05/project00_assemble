@@ -1,0 +1,13 @@
+"./syscfg/board.obj"
+"./syscfg/c2000ware_libraries.obj"
+"./project00_main.obj"
+"./app/src/tjx_init.obj"
+"./app/src/vofa.obj"
+"./bsp/src/hw_w25qxx.obj"
+"./bsp/src/oled.obj"
+"./device/device.obj"
+"./device/f28003x_codestartbranch.obj"
+"../28003x_generic_flash_lnk.cmd"
+"C:/TI/C2000Ware/C2000Ware_5_02_00_00/driverlib/f28003x/driverlib/ccs/Debug/driverlib.lib"
+-lc2000ware_libraries.cmd.genlibs
+-llibc.a

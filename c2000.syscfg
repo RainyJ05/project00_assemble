@@ -1,0 +1,73 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --device "F28003x" --part "F28003x_100PZ" --package "100PZ" --context "system" --product "C2000WARE@5.02.00.00"
+ * @v2CliArgs --device "TMS320F280039C" --package "100PZ" --context "system" --product "C2000WARE@5.02.00.00"
+ * @versions {"tool":"1.21.0+3721"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const gpio  = scripting.addModule("/driverlib/gpio.js", {}, false);
+const gpio1 = gpio.addInstance();
+const gpio2 = gpio.addInstance();
+const gpio3 = gpio.addInstance();
+const gpio4 = gpio.addInstance();
+const sci   = scripting.addModule("/driverlib/sci.js", {}, false);
+const sci1  = sci.addInstance();
+const spi   = scripting.addModule("/driverlib/spi.js", {}, false);
+const spi1  = spi.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+const multiplier1         = system.clockTree["PLL_IMULT"];
+multiplier1.multiplyValue = 12;
+
+const mux3       = system.clockTree["OSCCLKSRCSEL"];
+mux3.inputSelect = "X1_XTAL";
+
+gpio1.$name             = "LED0";
+gpio1.direction         = "GPIO_DIR_MODE_OUT";
+gpio1.writeInitialValue = true;
+gpio1.initialValue      = 1;
+gpio1.gpioPin.$assign   = "GPIO31";
+
+gpio2.$name           = "FLASH_CS";
+gpio2.direction       = "GPIO_DIR_MODE_OUT";
+gpio2.gpioPin.$assign = "GPIO55";
+
+gpio3.$name           = "SCREEN_SCL";
+gpio3.direction       = "GPIO_DIR_MODE_OUT";
+gpio3.padConfig       = "OD_PULLUP_INVERT";
+gpio3.gpioPin.$assign = "GPIO27";
+
+gpio4.$name           = "SCREEN_SDA";
+gpio4.direction       = "GPIO_DIR_MODE_OUT";
+gpio4.padConfig       = "OD_PULLUP_INVERT";
+gpio4.gpioPin.$assign = "GPIO26";
+
+sci1.$name                 = "mySCIB";
+sci1.sci.$assign           = "SCIB";
+sci1.sci.sci_rxPin.$assign = "GPIO23";
+sci1.sci.sci_txPin.$assign = "GPIO22";
+
+spi1.$name                   = "FLASH_SPI";
+spi1.mode                    = "SPI_MODE_CONTROLLER";
+spi1.ptePolarity             = "SPI_PTE_ACTIVE_HIGH";
+spi1.dataWidth               = "8";
+spi1.useFifo                 = false;
+spi1.useInterrupts           = false;
+spi1.useCase                 = "CUSTOM";
+spi1.useInterfacePins        = ["SPI@_CLK","SPI@_SIMO","SPI@_SOMI"];
+spi1.spi.spi_picoPin.$assign = "GPIO16";
+spi1.spi.spi_pociPin.$assign = "GPIO17";
+spi1.spi.spi_clkPin.$assign  = "GPIO56";
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+spi1.spi.$suggestSolution = "SPIA";
