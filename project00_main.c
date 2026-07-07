@@ -57,12 +57,27 @@
 #include "vofa.h"
 #include "tjx_init.h"
 #include "oled.h"
+#include "key.h"
+
+//
+// Defines
+//
+#define EPWM_PERIOD             3000
+#define ADC_SCALE               1/4096.0
+#define comp_threshold          2500
 
 //
 // Globals
 //
-uint16_t cpuTimer0IntCount; //number of times TIMER 0 ISR is triggered
-uint16_t delayCount;        //number (0-9) to scale the LED frequency
+uint16_t adcAResult;          // value used to store ADC conversion
+uint16_t CMPA_result;         // value used to calculate CMPA for new duty cycle value
+float duty;                   // value that holds part of the calculation for CMPA
+
+//
+// Function Prototypes
+//
+//__interrupt void INT_myCPUTIMER0_ISR(void);
+__interrupt void INT_myADCA_1_ISR(void);
 
 //
 // Main
@@ -112,13 +127,70 @@ void main(void)
     //
 
     OLED_Init();
+    Key_Open();
+//    CPUTimer_startTimer(myCPUTIMER0_BASE); // 开启定时器
+    EPWM_enableADCTrigger(myEPWM1_BASE, EPWM_SOC_A);// Start ePWM1, enabling SOCA
 
+    uint8_t KeyNum = 0;
     for(;;)
     {
+        if((EPWM_getTripZoneFlagStatus(myEPWM1_BASE) & EPWM_TZ_FLAG_OST) != 0U)
+             {
+                 //
+                 // Wait for comparator CTRIP to de-assert
+                 //
+                 while((CMPSS_getStatus(myCMPSS3_BASE) & CMPSS_STS_HI_FILTOUT) != 0U);
 
+                 //
+                 // Clear trip flags
+                 //
+                 KeyNum = Key_GetNum();
+                 if(KeyNum == 1)
+                 {
+                     EPWM_clearTripZoneFlag(myEPWM1_BASE, EPWM_TZ_INTERRUPT | EPWM_TZ_FLAG_OST | EPWM_TZ_FLAG_DCAEVT1);
+                 }
+             }
     }
 } // end of main
 
+//定时器中断服务函数，1kHz
+__interrupt void INT_myCPUTIMER0_ISR(void)
+{
+//    GPIO_togglePin(TEST_GPIO);
+//    Key_Tick();
+    //清除中断标志位
+    Interrupt_clearACKGroup(INT_myCPUTIMER0_INTERRUPT_ACK_GROUP);
+}
+
+// ADC转换完成中断服务函数
+__interrupt void INT_myADCA_1_ISR(void)
+{
+    // 按键
+    Key_Tick();
+
+    // 获取转换结果
+    adcAResult= ADC_readResult(ADCARESULT_BASE, ADC_SOC_NUMBER0);
+
+    // 计算比较值
+    duty = adcAResult*ADC_SCALE;
+    CMPA_result = EPWM_PERIOD*(1-duty);
+
+    // 更新占空比
+    EPWM_setCounterCompareValue(myEPWM1_BASE, EPWM_COUNTER_COMPARE_A, CMPA_result);
+
+    // 清除中断标志位
+    ADC_clearInterruptStatus(myADCA_BASE, ADC_INT_NUMBER1);
+
+    // 检查ADC溢出
+    if(true == ADC_getInterruptOverflowStatus(myADCA_BASE, ADC_INT_NUMBER1))
+    {
+        ADC_clearInterruptOverflowStatus(myADCA_BASE, ADC_INT_NUMBER1);
+        ADC_clearInterruptStatus(myADCA_BASE, ADC_INT_NUMBER1);
+    }
+
+    // 响应中断向量组
+    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP1);
+}
 
 //
 // End of File

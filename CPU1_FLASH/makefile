@@ -16,6 +16,7 @@ ORDERED_OBJS += \
 "./app/src/tjx_init.obj" \
 "./app/src/vofa.obj" \
 "./bsp/src/hw_w25qxx.obj" \
+"./bsp/src/key.obj" \
 "./bsp/src/oled.obj" \
 "./device/device.obj" \
 "./device/f28003x_codestartbranch.obj" \
@@ -158,8 +159,8 @@ project00_assemble.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "syscfg\board.obj" "syscfg\c2000ware_libraries.obj" "project00_main.obj" "app\src\tjx_init.obj" "app\src\vofa.obj" "bsp\src\hw_w25qxx.obj" "bsp\src\oled.obj" "device\device.obj" "device\f28003x_codestartbranch.obj" 
-	-$(RM) "syscfg\board.d" "syscfg\c2000ware_libraries.d" "project00_main.d" "app\src\tjx_init.d" "app\src\vofa.d" "bsp\src\hw_w25qxx.d" "bsp\src\oled.d" "device\device.d" 
+	-$(RM) "syscfg\board.obj" "syscfg\c2000ware_libraries.obj" "project00_main.obj" "app\src\tjx_init.obj" "app\src\vofa.obj" "bsp\src\hw_w25qxx.obj" "bsp\src\key.obj" "bsp\src\oled.obj" "device\device.obj" "device\f28003x_codestartbranch.obj" 
+	-$(RM) "syscfg\board.d" "syscfg\c2000ware_libraries.d" "project00_main.d" "app\src\tjx_init.d" "app\src\vofa.d" "bsp\src\hw_w25qxx.d" "bsp\src\key.d" "bsp\src\oled.d" "device\device.d" 
 	-$(RM) "device\f28003x_codestartbranch.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'

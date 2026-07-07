@@ -118,7 +118,7 @@ project00_main.obj: C:/TI/workspace/workspace_f280039c/project00_assemble/app/in
 project00_main.obj: C:/TI/workspace/workspace_f280039c/project00_assemble/bsp/inc/oled.h
 project00_main.obj: C:/TI/ccs1281/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlib.h
 project00_main.obj: C:/TI/ccs1281/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlibf.h
-project00_main.obj: C:/TI/workspace/workspace_f280039c/project00_assemble/app/inc/bmp.h
+project00_main.obj: C:/TI/workspace/workspace_f280039c/project00_assemble/bsp/inc/key.h
 
 ../project00_main.c:
 
@@ -356,5 +356,5 @@ C:/TI/ccs1281/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlib.h:
 
 C:/TI/ccs1281/ccs/tools/compiler/ti-cgt-c2000_22.6.1.LTS/include/stdlibf.h:
 
-C:/TI/workspace/workspace_f280039c/project00_assemble/app/inc/bmp.h:
+C:/TI/workspace/workspace_f280039c/project00_assemble/bsp/inc/key.h:
 

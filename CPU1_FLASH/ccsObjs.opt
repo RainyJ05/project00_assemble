@@ -4,6 +4,7 @@
 "./app/src/tjx_init.obj"
 "./app/src/vofa.obj"
 "./bsp/src/hw_w25qxx.obj"
+"./bsp/src/key.obj"
 "./bsp/src/oled.obj"
 "./device/device.obj"
 "./device/f28003x_codestartbranch.obj"

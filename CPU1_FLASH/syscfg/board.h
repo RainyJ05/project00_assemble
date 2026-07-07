@@ -57,6 +57,26 @@ extern "C"
 // PinMux Configurations
 //
 //*****************************************************************************
+
+//
+// ANALOG -> myANALOGPinMux0 Pinmux
+//
+
+//
+// EPWM1 -> myEPWM1 Pinmux
+//
+//
+// EPWM1_A - GPIO Settings
+//
+#define GPIO_PIN_EPWM1_A 0
+#define myEPWM1_EPWMA_GPIO 0
+#define myEPWM1_EPWMA_PIN_CONFIG GPIO_0_EPWM1_A
+//
+// EPWM1_B - GPIO Settings
+//
+#define GPIO_PIN_EPWM1_B 1
+#define myEPWM1_EPWMB_GPIO 1
+#define myEPWM1_EPWMB_PIN_CONFIG GPIO_1_EPWM1_B
 //
 // GPIO31 - GPIO Settings
 //
@@ -73,6 +93,22 @@ extern "C"
 // GPIO26 - GPIO Settings
 //
 #define SCREEN_SDA_GPIO_PIN_CONFIG GPIO_26_GPIO26
+//
+// GPIO57 - GPIO Settings
+//
+#define KEY0_GPIO_PIN_CONFIG GPIO_57_GPIO57
+//
+// GPIO58 - GPIO Settings
+//
+#define KEY1_GPIO_PIN_CONFIG GPIO_58_GPIO58
+//
+// GPIO59 - GPIO Settings
+//
+#define KEY2_GPIO_PIN_CONFIG GPIO_59_GPIO59
+//
+// GPIO44 - GPIO Settings
+//
+#define TEST_GPIO_GPIO_PIN_CONFIG GPIO_44_GPIO44
 
 //
 // SCIB -> mySCIB Pinmux
@@ -114,6 +150,74 @@ extern "C"
 
 //*****************************************************************************
 //
+// ADC Configurations
+//
+//*****************************************************************************
+#define myADCA_BASE ADCA_BASE
+#define myADCA_RESULT_BASE ADCARESULT_BASE
+#define myADCA_SOC0 ADC_SOC_NUMBER0
+#define myADCA_FORCE_SOC0 ADC_FORCE_SOC0
+#define myADCA_SAMPLE_WINDOW_SOC0 100
+#define myADCA_TRIGGER_SOURCE_SOC0 ADC_TRIGGER_EPWM1_SOCA
+#define myADCA_CHANNEL_SOC0 ADC_CH_ADCIN0
+void myADCA_init();
+
+
+//*****************************************************************************
+//
+// ASYSCTL Configurations
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// CMPSS Configurations
+//
+//*****************************************************************************
+#define myCMPSS3_BASE CMPSS3_BASE
+#define myCMPSS3_HIGH_COMP_BASE CMPSS3_BASE    
+#define myCMPSS3_LOW_COMP_BASE CMPSS3_BASE    
+void myCMPSS3_init();
+
+//*****************************************************************************
+//
+// CPUTIMER Configurations
+//
+//*****************************************************************************
+#define myCPUTIMER0_BASE CPUTIMER0_BASE
+void myCPUTIMER0_init();
+
+//*****************************************************************************
+//
+// EPWM Configurations
+//
+//*****************************************************************************
+#define myEPWM1_BASE EPWM1_BASE
+#define myEPWM1_TBPRD 3000
+#define myEPWM1_COUNTER_MODE EPWM_COUNTER_MODE_UP_DOWN
+#define myEPWM1_TBPHS 0
+#define myEPWM1_CMPA 0
+#define myEPWM1_CMPB 0
+#define myEPWM1_CMPC 0
+#define myEPWM1_CMPD 0
+#define myEPWM1_DBRED 120
+#define myEPWM1_DBFED 120
+#define myEPWM1_TZA_ACTION EPWM_TZ_ACTION_LOW
+#define myEPWM1_TZB_ACTION EPWM_TZ_ACTION_HIGH_Z
+#define myEPWM1_OSHT_SOURCES EPWM_TZ_SIGNAL_DCAEVT1
+#define myEPWM1_INTERRUPT_SOURCE EPWM_INT_TBCTR_DISABLED
+
+//*****************************************************************************
+//
+// EPWMXBAR Configurations
+//
+//*****************************************************************************
+void myEPWMXBAR4_init();
+#define myEPWMXBAR4 XBAR_TRIP4
+#define myEPWMXBAR4_ENABLED_MUXES (XBAR_MUX04)
+
+//*****************************************************************************
+//
 // GPIO Configurations
 //
 //*****************************************************************************
@@ -125,6 +229,30 @@ void FLASH_CS_init();
 void SCREEN_SCL_init();
 #define SCREEN_SDA 26
 void SCREEN_SDA_init();
+#define KEY0 57
+void KEY0_init();
+#define KEY1 58
+void KEY1_init();
+#define KEY2 59
+void KEY2_init();
+#define TEST_GPIO 44
+void TEST_GPIO_init();
+
+//*****************************************************************************
+//
+// INTERRUPT Configurations
+//
+//*****************************************************************************
+
+// Interrupt Settings for INT_myADCA_1
+#define INT_myADCA_1 INT_ADCA1
+#define INT_myADCA_1_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
+extern __interrupt void INT_myADCA_1_ISR(void);
+
+// Interrupt Settings for INT_myCPUTIMER0
+#define INT_myCPUTIMER0 INT_TIMER0
+#define INT_myCPUTIMER0_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
+extern __interrupt void INT_myCPUTIMER0_ISR(void);
 
 //*****************************************************************************
 //
@@ -152,13 +280,27 @@ void FLASH_SPI_init();
 
 //*****************************************************************************
 //
+// SYNC Scheme Configurations
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
 // Board Configurations
 //
 //*****************************************************************************
 void	Board_init();
+void	ADC_init();
+void	ASYSCTL_init();
+void	CMPSS_init();
+void	CPUTIMER_init();
+void	EPWM_init();
+void	EPWMXBAR_init();
 void	GPIO_init();
+void	INTERRUPT_init();
 void	SCI_init();
 void	SPI_init();
+void	SYNC_init();
 void	PinMux_init();
 
 //*****************************************************************************
